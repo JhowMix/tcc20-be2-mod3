@@ -1,0 +1,16 @@
+{
+  "name": "kangaroo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.6.2",
+    "net-snmp": "^2.9.2"
+  },
+  "type": "commonjs"
+}
