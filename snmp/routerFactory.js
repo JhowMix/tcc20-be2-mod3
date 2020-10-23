@@ -128,7 +128,7 @@ const deviceInfo = session => {
 const rawDevice = raw => {
   let router = new Router();
   router.name = raw[1].value.toString();
-  router.engineID = raw[0].value.toString('hex');
+  router.engineId = raw[0].value.toString('hex');
   router.deviceFamily = raw[5].value.toString().split('$')[1];
   router.status = 'On';
   router.lastChecking = new Date();

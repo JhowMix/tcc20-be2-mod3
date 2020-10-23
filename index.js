@@ -22,16 +22,17 @@ client.connect(err => {
         fetchRouter(session3)])
         .then(results => {
           console.log('\nOperation at: ' + new Date());
-          results.forEach(value => {
+          results.forEach(value => {        
             collection.findOneAndUpdate(
-              { engineID: value.engineID },
+              { engineId: value.engineId },
               { $set: value },
               { upsert: true },
               (err, doc) => {
                 if (err) {
                   console.error(err);
                 } else {
-                  console.log('Router w/EnID: ' + doc.value.engineID);
+                  console.log(movie);
+                  console.log('Router w/EnID: ' + doc.value.engineId);
                 }
               });
           });

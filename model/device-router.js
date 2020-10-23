@@ -1,5 +1,5 @@
 class Router {
-    engineID = '';
+    engineId = '';
     name = '';
     deviceFamily = '';
     osVersion = '';
