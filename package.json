@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
     "mongodb": "^3.6.2",
-    "net-snmp": "^2.9.2"
+    "net-snmp": "^2.9.2",
+    "nodemon": "^2.0.6",
+    "ping": "^0.3.0"
   },
   "type": "commonjs"
 }

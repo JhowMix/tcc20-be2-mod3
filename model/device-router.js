@@ -6,6 +6,7 @@ class Router {
     platform = 'Cisco IOS';
     status = 'off';
     upTime = 0;
+    cpuUsage = 0;
     lastChecking = undefined;
     throughputAverage = undefined;
     ports = [];

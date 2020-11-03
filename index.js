@@ -1,45 +1,45 @@
+const express = require('express');
+const deviceResource = require('./routes/device');
 const snmp = require('net-snmp');
-const user = require('./settings/snmp').user;
-const options = require('./settings/snmp').options;
-const fetchRouter = require('./snmp/routerFactory');
-const client = require('./settings/dbase');
 
-var session1 = snmp.createV3Session("172.20.0.200", user, options);
-var session2 = snmp.createV3Session("200.0.0.2", user, options);
-var session3 = snmp.createV3Session("200.0.0.6", user, options);
+const { fetch } = require('./snmp/router-factory');
+const { checkLife } = require('./utils/connection');
+const { save, fetchAllLoopback } = require('./repository/device-repository');
 
+const { client } = require('./settings/dbase');
+const { user, options } = require('./settings/snmp');
+
+const app = express();
+const port = 3000;
 
 client.connect(err => {
-  const collection = client.db("tcc_dev").collection("devices");
+  if (err)
+    throw Error(`Falha ao conectar-se com a base de dados: ${err}`);
 
-  if (err) {
-    console.error(err);
-  } else {
-    setInterval(() => {
-      Promise.all([
-        fetchRouter(session1),
-        fetchRouter(session2),
-        fetchRouter(session3)])
-        .then(results => {
-          console.log('\nOperation at: ' + new Date());
-          results.forEach(value => {        
-            collection.findOneAndUpdate(
-              { engineId: value.engineId },
-              { $set: value },
-              { upsert: true },
-              (err, doc) => {
-                if (err) {
-                  console.error(err);
-                } else {
-                  console.log(movie);
-                  console.log('Router w/EnID: ' + doc.value.engineId);
-                }
-              });
+  let db = client.db('tcc_dev');
+
+  setInterval(async () => {
+    let loopbks = await fetchAllLoopback(db);
+
+    for(const i of loopbks) {
+      let isAlive = await checkLife(i.loopback_addr);
+      
+      if(isAlive) {
+        let session = snmp.createV3Session(i.loopback_addr, user, options)
+        fetch(session)
+          .then(device => {
+            session.close();
+            save(db, device);
           });
-        });
-    }, 5000);
-  }
+      }
+    }
+  }, 5000)
 });
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use('/device', deviceResource);
 
-
+app.listen(port, () => {
+  console.log(`Service online at http://172.20.0.221:${port}`);
+});

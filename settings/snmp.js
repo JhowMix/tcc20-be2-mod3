@@ -2,7 +2,7 @@ const snmp = require('net-snmp');
 
 exports.options = {
   port: 161,
-  retries: 1,
+  retries: 3,
   timeout: 5000,
   transport: "udp4",
   trapPort: 162,
