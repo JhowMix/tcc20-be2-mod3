@@ -28,7 +28,7 @@ client.connect(err => {
         let session = snmp.createV3Session(i.loopback_addr, user, options)
         fetch(session)
           .then(device => {
-            session.close();
+            // session.close();
             save(db, device);
           });
       }

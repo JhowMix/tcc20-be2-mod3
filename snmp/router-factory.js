@@ -56,6 +56,7 @@ const portsInfo = (session, ifNumber) => {
   
       session.get(test, (error, varbinds) => {
         if (error) {
+          console.log(error)
           throw error;
         } else {
           oids.push(...varbinds);

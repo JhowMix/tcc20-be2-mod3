@@ -2,11 +2,9 @@ version: "3.8"
 
 services:
   nms:
-    image: jhowmix/kangaroo_nms_be1
+    build: .
     container_name: nms_kangaroo_be1
     command: npm test
-    volumes:
-      - .:/app
     ports:
       - "161:161"
       - "162:162"
